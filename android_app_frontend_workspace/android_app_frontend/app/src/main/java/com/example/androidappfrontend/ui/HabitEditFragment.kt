@@ -50,8 +50,8 @@ class HabitEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val nameInput = view.findViewById<EditText>(R.id.input_habit_name)
         val descInput = view.findViewById<EditText>(R.id.input_habit_desc)
-        val saveBtn = view.findViewById<Button>(R.id.btn_save_habit)
-        val cancelBtn = view.findViewById<Button>(R.id.btn_cancel)
+        val saveBtn = view.findViewById<View>(R.id.btn_save_habit)
+        val cancelBtn = view.findViewById<View>(R.id.btn_cancel)
 
         if (existingHabit != null) {
             nameInput.setText(existingHabit?.name)
@@ -63,7 +63,10 @@ class HabitEditFragment : Fragment() {
             val desc = descInput.text.toString().trim()
 
             if (name.isEmpty()) {
-                Snackbar.make(view, "Please enter the habit name", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(view, getString(R.string.hint_enter_name), Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.accent, null))
+                    .setTextColor(resources.getColor(R.color.white, null))
+                    .show()
                 return@setOnClickListener
             }
             val habits = HabitStorage.loadHabits(requireContext())
@@ -71,13 +74,22 @@ class HabitEditFragment : Fragment() {
                 habits[habitIndex].name = name
                 habits[habitIndex].description = desc
                 HabitStorage.saveHabits(requireContext(), habits)
-                Snackbar.make(view, "Habit updated", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(view, getString(R.string.habit_updated), Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.secondary, null))
+                    .setTextColor(resources.getColor(R.color.white, null))
+                    .show()
             } else { // Create new
                 habits.add(Habit(name, desc))
                 HabitStorage.saveHabits(requireContext(), habits)
-                Snackbar.make(view, "Habit created", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(view, getString(R.string.habit_created), Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.primary, null))
+                    .setTextColor(resources.getColor(R.color.white, null))
+                    .show()
             }
-            // Ensure fragment list properly refreshes after edit/create
+            // Subtle animation for user feedback (Material default)
+            view.animate().alpha(0.5f).setDuration(80).withEndAction {
+                view.animate().alpha(1f).setDuration(80).start()
+            }.start()
             parentFragmentManager.popBackStackImmediate()
         }
         cancelBtn.setOnClickListener {

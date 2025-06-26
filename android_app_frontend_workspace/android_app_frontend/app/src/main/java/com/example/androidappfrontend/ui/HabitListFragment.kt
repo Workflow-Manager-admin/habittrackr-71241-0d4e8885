@@ -67,9 +67,19 @@ class HabitListFragment : Fragment(), OnHabitActionListener {
             habits.removeAt(position)
             HabitStorage.saveHabits(requireContext(), habits)
             adapter.updateList(habits)
-            Snackbar.make(requireView(), "Habit deleted", Snackbar.LENGTH_SHORT).show()
+            // Subtle feedback animation
+            recyclerView.animate().alpha(0.65f).setDuration(80).withEndAction {
+                recyclerView.animate().alpha(1f).setDuration(120).start()
+            }.start()
+            Snackbar.make(requireView(), getString(R.string.habit_deleted), Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.accent, null))
+                .setTextColor(resources.getColor(R.color.white, null))
+                .show()
         } else {
-            Snackbar.make(requireView(), "Error: Cannot delete habit", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), getString(R.string.error_delete), Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.action_critical, null))
+                .setTextColor(resources.getColor(R.color.white, null))
+                .show()
         }
     }
 }
