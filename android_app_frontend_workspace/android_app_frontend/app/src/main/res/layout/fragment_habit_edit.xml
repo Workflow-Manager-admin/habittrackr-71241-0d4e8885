@@ -10,6 +10,7 @@
     app:strokeWidth="1dp"
     android:layout_margin="24dp"
     android:layout_gravity="center"
+    android:background="@drawable/bg_gradient_card"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout 
@@ -79,7 +80,7 @@
             app:cornerRadius="16dp"
             app:iconTint="@android:color/white"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/primary"
+            android:background="@drawable/btn_gradient_primary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_input_layout_desc"
@@ -95,7 +96,7 @@
             android:textColor="@color/accent"
             app:strokeColor="@color/accent"
             app:cornerRadius="16dp"
-            android:backgroundTint="@android:color/white"
+            android:background="@drawable/btn_gradient_accent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_save_habit"
