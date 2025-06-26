@@ -51,6 +51,7 @@ class HabitListFragment : Fragment(), OnHabitActionListener {
     override fun onResume() {
         super.onResume()
         habits = HabitStorage.loadHabits(requireContext())
+        // Defensive: Always clear and update the reference before passing to adapter
         adapter.updateList(habits)
     }
 
@@ -62,9 +63,13 @@ class HabitListFragment : Fragment(), OnHabitActionListener {
     }
 
     override fun onDelete(habit: Habit, position: Int) {
-        habits.removeAt(position)
-        HabitStorage.saveHabits(requireContext(), habits)
-        adapter.updateList(habits)
-        Snackbar.make(requireView(), "Habit deleted", Snackbar.LENGTH_SHORT).show()
+        if (position >= 0 && position < habits.size) {
+            habits.removeAt(position)
+            HabitStorage.saveHabits(requireContext(), habits)
+            adapter.updateList(habits)
+            Snackbar.make(requireView(), "Habit deleted", Snackbar.LENGTH_SHORT).show()
+        } else {
+            Snackbar.make(requireView(), "Error: Cannot delete habit", Snackbar.LENGTH_SHORT).show()
+        }
     }
 }

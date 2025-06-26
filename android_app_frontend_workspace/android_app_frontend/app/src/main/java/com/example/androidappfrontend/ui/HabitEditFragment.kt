@@ -77,7 +77,8 @@ class HabitEditFragment : Fragment() {
                 HabitStorage.saveHabits(requireContext(), habits)
                 Snackbar.make(view, "Habit created", Snackbar.LENGTH_SHORT).show()
             }
-            parentFragmentManager.popBackStack()
+            // Ensure fragment list properly refreshes after edit/create
+            parentFragmentManager.popBackStackImmediate()
         }
         cancelBtn.setOnClickListener {
             parentFragmentManager.popBackStack()
